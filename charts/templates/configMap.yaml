@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "configmap-{{.Release.Name}}"
+  namespace: "{{.Values.deploy.namespace}}"
+data:
+  RABBIT_ELK.json: {{.Values.config.RABBIT_ELK | toJson | quote}}

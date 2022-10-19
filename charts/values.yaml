@@ -1,0 +1,114 @@
+# Default values for chart
+
+deploy:
+    name: #{name}#
+    aplicacion: #{name}#
+    namespace: #{stage}#-#{namespace}#
+    replicas: #{minReplicas}#
+    type: #{type}#
+    ambiente: #{stage}#
+    area_negocio: #{namespace}#
+    area_ti: #{area_ti}#
+    pais: #{pais}#
+    acrServer: #{ecr}#
+    imageTag: #{imageTag}#
+    cpulimits: #{cpulimits}#
+    memorylimits: #{memorylimits}#
+    cpurequest: #{cpurequest}#
+    memoryrequest: #{memoryrequest}#
+    volumePath: #{volumePath}#
+    volumeName: #{volumeName}#
+    containerPort: #{containerPort}#
+    imagePullSecrets: #{imagePullSecrets
+
+service:
+    port: #{port}#
+    type: ClusterIP
+    protocol: TCP
+
+secrets:
+
+    ## variables de entorno
+
+    apiVersion: #{apiVersion}#
+    allowBeanDefinitionOverriding: #{allowBeanDefinitionOverriding}#
+    hikariConnectionTimeout: #{hikari.connectionTimeout}#
+    hikariMaximumPoolSize: #{hikari.maximumPoolSize}#
+    hikariPoolName: #{hikari.poolName}#
+    operation: #{operation}#
+    componentName: #{name}#
+    serviceName: #{stage}#-#{serviceName}#
+    schedulerCronExpression: "{scheduler.cron.expression}"
+    appAsyncWithDlqRetry: "#{appAsyncWithDlqRetry}#"
+    appAsyncRetryDelay: "#{appAsyncRetryDelay}#"
+    appAsyncMaxRetries: "#{appAsyncMaxRetries}#"
+    springCacheJcacheConfig: "#{springCacheJcacheConfig}#"
+    octopiaTokenGrantType: "#{octopiaTokenGrantType}#"
+    octopiaClientId: "#{octopiaClientId}#"
+    octopiaClientSecret: "#{octopiaClientSecret}#"
+    octopiaApisDateFormat: "#{octopiaApisDateFormat}#"
+    octopiaApisBaseUrl: "#{octopiaApisBaseUrl}#"
+    octopiaApisRetrieveToken: "#{octopiaApisRetrieveToken}#"
+    octopiaApisRetrieveTokenDefaultExpiry: "#{octopiaApisRetrieveTokenDefaultExpiry}#"
+    dateFormat: "#{dateFormat}#"
+    accessKeyId: "#{accessKeyId}#"
+    secretKey: "#{secretKey}#"
+    awsEndpoint: "#{awsEndpoint}#"
+    awsQueueName: "#{awsQueueName}#"
+    awsGroupId: "#{awsGroupId}#"
+    awsTrazabilidadAccessKeyId: "#{awsTrazabilidadAccessKeyId}#"
+    awsTrazabilidadSecretKey: "#{awsTrazabilidadSecretKey}#"
+    awsTrazabilidadEndpoint: "#{awsTrazabilidadEndpoint}#"
+    awsTrazabilidadName: "#{awsTrazabilidadName}#"
+    awsTrazabilidadGroupId: "#{awsTrazabilidadGroupId}#"
+    awsDynamoAccessKeyId: "#{awsDynamoAccessKeyId}#"
+    awsDynamoSecretKey: "#{awsDynamoSecretKey}#"
+    awsDynamoTableProductosName: "#{awsDynamoTableProductosName}#"
+    awsDynamoTableConfiguracionesName: "#{awsDynamoTableConfiguracionesName}#"
+    awsDynamoTableConfiguracionesProductosId: "#{awsDynamoTableConfiguracionesProductosId}#"
+    cloudAwsRegionStatic: "#{cloudAwsRegionStatic}#"
+    cloudAwsStackAuto: "#{cloudAwsStackAuto}#"
+    logLevelRoot: "#{logLevelRoot}#"
+    logPatternFile: "#{logPatternFile}#"
+    logFileName: "#{logFileName}#"
+
+
+    ## Adicional que sugiere Mario
+
+    arnSecret: "#{arnSecret}#"
+    cluster: "#{cluster}#"
+    container: "#{container}#"
+    cpu: "#{cpu}#"
+    dockerImage: "#{dockerImage}#"
+    executionRole: "#{executionRole}#"
+    logsGroup: "#{logsGroup}#"
+    memory: "#{memory}#"
+    region: "#{region}#"
+    securityGroup: "#{securityGroup}#"
+    service: "#{service}#"
+    serviceConnection: "#{service-connection}#"
+    subnet1: "#{subnet1}#"
+    subnet2: "#{subnet2}#"
+    task: "#{task}#"
+    taskRole: "#{taskRole}#"
+
+config:
+    name: conf
+    RABBIT_ELK: {
+        "log_dir": /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+        ,"error_dir": /data1/logs/#{stage}#-#{namespace}#/#{nombre}#/
+        ,"operation": "SUBSCRIBER"
+        ,"type": "OUT"
+        ,"domainName": #{stage}#-#{namespace}#
+        ,"message_name": #{nombre}#
+        ,"host": #{elk.host}#
+        ,"port": #{elk.port}#
+        ,"virtual_host": #{elk.virtualHost}#
+        ,"username": #{elk.username}#
+        ,"password": ""
+        ,"routing_key": #{elk.routingKey}#
+        ,"exchange": #{elk.exchange}#
+        ,"connection_name": #{nombre}#
+        ,"time_sleep": 20
+        ,"exchange_type": "topic"
+    }

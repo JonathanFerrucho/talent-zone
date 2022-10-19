@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{.Release.Name}}"
+  namespace: "{{.Values.deploy.namespace}}"
+spec:
+  selector:
+    aplicacion: "{{.Release.Name}}"
+    app: "{{.Values.deploy.ambiente}}-{{.Release.Name}}"
+  ports:
+  - protocol: "{{ .Values.service.protocol }}"
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.targetport }}
+  type: "{{ .Values.service.type }}"
+
+

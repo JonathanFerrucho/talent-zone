@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{.Release.Name}}"
+  namespace: "{{.Values.deploy.namespace}}"
+spec:
+  replicas: {{.Values.deploy.replicas}}
+  selector:
+    matchLabels:
+        type: "{{.Values.deploy.type}}"
+        ambiente: "{{.Values.deploy.ambiente}}"
+        app: "{{.Values.deploy.ambiente}}-{{.Release.Name}}"
+        aplicacion: "{{.Release.Name}}"
+        area.negocio: "{{.Values.deploy.area_negocio}}"
+        area.ti: "{{.Values.deploy.area_ti}}"
+        pais: "{{.Values.deploy.pais}}"
+        version: v{{.Values.deploy.imageTag}}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        type: "{{.Values.deploy.type}}"
+        ambiente: "{{.Values.deploy.ambiente}}"
+        app: "{{.Values.deploy.ambiente}}-{{.Release.Name}}"
+        aplicacion: "{{.Release.Name}}"
+        area.negocio: "{{.Values.deploy.area_negocio}}"
+        area.ti: "{{.Values.deploy.area_ti}}"
+        pais: "{{.Values.deploy.pais}}"
+        version: v{{.Values.deploy.imageTag}}
+    spec:
+      containers:
+      - image: "{{.Values.deploy.acrServer}}/{{.Values.deploy.ambiente}}-{{.Release.Name}}:{{.Values.deploy.imageTag}}"
+        name: "{{.Release.Name}}"
+        imagePullPolicy: Always
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsUser: 1100
+          runAsGroup: 1100
+          privileged: false
+          allowPrivilegeEscalation: false
+        env:
+          - name: RABBIT_ELK
+            valueFrom:
+              configMapKeyRef:
+                name: "configmap-{{.Release.Name}}"
+                key: RABBIT_ELK.json
+        volumeMounts:
+        - name: tz-colombia
+          mountPath: /etc/localtime
+        - mountPath: {{.Values.deploy.path_mountPath}}
+          name: "{{.Release.Name}}-volume"
+        resources:
+          limits:
+            cpu: "{{.Values.deploy.cpulimits}}m"
+            memory: "{{.Values.deploy.memorylimits}}Mi"
+          requests:
+            cpu: "{{div .Values.deploy.cpulimits 8}}m"
+            memory: "{{div .Values.deploy.memorylimits 4}}Mi"
+      volumes:
+      - name: tz-colombia
+        hostPath:
+            path: /usr/share/zoneinfo/America/Bogota
+
+      - name: "{{.Release.Name}}-volume"
+        hostPath:
+            path: {{.Values.deploy.path_hostPath}}
+            type: Directory
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: {{.Values.deploy.imagePullSecrets}}
+status: {}
